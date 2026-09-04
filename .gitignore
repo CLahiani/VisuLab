@@ -1,0 +1,6 @@
+.DS_Store
+# Scénarios : jamais versionnés (données de démo potentiellement sensibles)
+scenarios/
+# Jamais versionner de tokens/secrets
+GitHub-Token.textClipping
+*.textClipping
