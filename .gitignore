@@ -1,6 +1,13 @@
+# macOS / OneDrive
 .DS_Store
-# Scénarios : jamais versionnés (données de démo potentiellement sensibles)
-scenarios/
-# Jamais versionner de tokens/secrets
-GitHub-Token.textClipping
+._*
 *.textClipping
+
+# Scenarios: never versioned (potentially sensitive demo data — IPs, machine names, customers)
+scenarios/
+
+# Generated outputs (provisioning & image exports)
+deploy-*.sh
+runbook-*.md
+*.png
+*.svg
