@@ -1,21 +1,21 @@
 # VisuLab
 
-Interface web de conception de scénarios de démonstration (Veeam) : éditeur graphique de topologies (machines, hyperviseurs, zones, liens), stockage des scénarios en fichiers JSON, et génération des livrables de provisioning.
+Web-based demo scenario designer: build infrastructure topologies graphically (Veeam components, hypervisors, zones, links) before preparing and provisioning the actual machines.
 
-## Utilisation
+## Usage
 
-Ouvrir `visulab.html` dans Chrome ou Edge (aucune installation, fichier unique).
+Open `visulab.html` in Chrome or Edge (single file, no installation, no dependencies).
 
-- **Bibliothèque** : glisser-déposer des composants Veeam (VBR, Proxy, Repository…), hyperviseurs (ESXi, Hyper-V, Proxmox VE), infrastructure (VM, Kubernetes, Container, Database, S3 immuable…), zones (Zone, Datacenter, Salle) et formes.
-- **Liens** : tirer depuis la pastille verte d'un objet vers un autre.
-- **Propriétés** : nom, IP, rôle, OS, description, couleurs (panneau de droite).
-- **Sélection multiple** : cadre à la souris ou Shift+clic, puis alignement/répartition.
-- **Scénarios** : bouton 📁 pour choisir le dossier de travail ; enregistrement direct en JSON (`Ctrl+S`), historique dans la colonne de gauche, import/export.
-- **Présentation** : mode plein écran lecture seule (🎬), mode confidentialité (👁).
-- **Exports** : image PNG/SVG, et 🚀 Provisioning → script bash KVM/libvirt (cloud-init) ou runbook Markdown détaillé.
+- **Library**: drag and drop Veeam components (VBR, Proxy, Repository…), hypervisors (ESXi, Hyper-V, Proxmox VE), infrastructure (VM, Kubernetes, Container, Database, immutable S3…), zones (Zone, Datacenter, Room) and shapes.
+- **Links**: drag from an object's green handle to another object.
+- **Properties**: name, IP, role, OS, description, colors (right panel).
+- **Multi-select**: marquee drag or Shift+click, then align/distribute.
+- **Scenarios**: 📁 button to pick a working folder; direct JSON save (`Ctrl+S`), history in the left column, import/export.
+- **Presentation**: full-screen read-only mode (🎬), privacy mode (👁).
+- **Exports**: PNG/SVG image, and 🚀 Provisioning → KVM/libvirt bash script (cloud-init) or a detailed Markdown runbook.
 
 ## Structure
 
-- `visulab.html` — l'application complète (HTML/CSS/JS, sans dépendance)
+- `visulab.html` — the complete application (HTML/CSS/JS, dependency-free)
 
-Les scénarios sont enregistrés en JSON dans le dossier de travail choisi via le bouton 📁 — ils restent locaux et ne sont pas versionnés dans ce dépôt.
+Scenarios are saved as JSON files in the working folder chosen via the 📁 button — they stay local and are not versioned in this repository.

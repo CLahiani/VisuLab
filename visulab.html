@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VisuLab — Designer de scénarios</title>
+<title>VisuLab — Scenario Designer</title>
 <style>
   :root{
     --green:#00B336; --green-dark:#00832A; --green-light:#E6F7EC;
@@ -93,7 +93,7 @@
   #zoomCtrl button{border:none; padding:4px 9px;}
   #hintBar{position:absolute; bottom:14px; left:14px; font-size:11.5px; color:var(--muted); background:rgba(255,255,255,.85); padding:5px 10px; border-radius:7px; border:1px solid var(--border); pointer-events:none;}
 
-  /* ===== Panneau propriétés ===== */
+  /* ===== Properties panel ===== */
   #propPanel{width:250px; flex:none; background:var(--panel); border-left:1px solid var(--border); overflow-y:auto; padding-bottom:16px;}
   #propPanel .empty{color:var(--muted); font-size:12.5px; padding:16px 14px; line-height:1.5;}
   .prop-group{padding:4px 14px;}
@@ -111,7 +111,7 @@
   button.danger{color:var(--danger); border-color:#EBCCCB;}
   button.danger:hover{background:#FBEDEC;}
 
-  /* Mode présentation */
+  /* Presentation mode */
   body.presenting header, body.presenting .sidebar, body.presenting #propPanel, body.presenting #hintBar{display:none;}
   body.presenting .handle{display:none !important;}
   body.presenting .node{cursor:default;}
@@ -145,31 +145,31 @@
     <svg width="24" height="24" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="#00B336"/><path d="M7 8l5 9 5-9" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
     VisuLab
   </div>
-  <input id="scenarioName" value="Nouveau scénario" spellcheck="false">
-  <div id="dirtyDot" title="Modifications non enregistrées"></div>
-  <button id="btnUndo" class="icon-only" title="Annuler (Ctrl+Z)">↶</button>
-  <button id="btnRedo" class="icon-only" title="Rétablir (Ctrl+Y)">↷</button>
+  <input id="scenarioName" value="New scenario" spellcheck="false">
+  <div id="dirtyDot" title="Unsaved changes"></div>
+  <button id="btnUndo" class="icon-only" title="Undo (Ctrl+Z)">↶</button>
+  <button id="btnRedo" class="icon-only" title="Redo (Ctrl+Y)">↷</button>
   <div class="spacer"></div>
-  <button id="btnNew">✚ Nouveau</button>
-  <button id="btnSave" class="primary">💾 Enregistrer</button>
-  <button id="btnExport">⬇ Exporter</button>
-  <button id="btnImport">⬆ Importer</button>
-  <button id="btnPng" title="Exporter le schéma en image PNG">🖼 PNG</button>
-  <button id="btnSvg" class="icon-only" title="Exporter le schéma en SVG">SVG</button>
-  <button id="btnProv" title="Générer les fichiers de provisioning des machines">🚀 Provisioning</button>
-  <button id="btnPresent" title="Mode présentation : plein écran, menus masqués, lecture seule (Échap pour quitter)">🎬 Présenter</button>
-  <button id="btnFolder" title="Choisir le dossier de stockage des scénarios">📁 Dossier</button>
+  <button id="btnNew">✚ New</button>
+  <button id="btnSave" class="primary">💾 Save</button>
+  <button id="btnExport">⬇ Export</button>
+  <button id="btnImport">⬆ Import</button>
+  <button id="btnPng" title="Export the diagram as a PNG image">🖼 PNG</button>
+  <button id="btnSvg" class="icon-only" title="Export the diagram as SVG">SVG</button>
+  <button id="btnProv" title="Generate machine provisioning files">🚀 Provisioning</button>
+  <button id="btnPresent" title="Presentation mode: full screen, hidden menus, read-only (Esc to exit)">🎬 Present</button>
+  <button id="btnFolder" title="Choose the scenarios working folder">📁 Folder</button>
 </header>
 
 <main>
   <div class="sidebar">
     <div id="palette">
-      <div class="sec-head"><h3>Bibliothèque</h3><button id="tglPal" class="sec-toggle" title="Replier/déplier la bibliothèque">▾</button></div>
+      <div class="sec-head"><h3>Library</h3><button id="tglPal" class="sec-toggle" title="Collapse/expand the library">▾</button></div>
       <div id="palBody"></div>
     </div>
     <div id="historyPanel">
-      <div id="historyHead"><h3>Scénarios</h3><div style="display:flex;gap:4px"><button id="btnPrivacy" class="icon-only" title="Masquer/afficher la liste des scénarios (confidentialité en partage d'écran)">👁</button><button id="btnRefresh" class="icon-only" title="Actualiser la liste">↻</button><button id="tglHist" class="sec-toggle" title="Replier/déplier la section">▾</button></div></div>
-      <div id="privacyNote" style="display:none; font-size:12px; color:var(--muted); padding:10px 12px; line-height:1.5;">🔒 Liste masquée pour le partage d'écran.<br>Cliquez sur 👁 pour la réafficher.</div>
+      <div id="historyHead"><h3>Scenarios</h3><div style="display:flex;gap:4px"><button id="btnPrivacy" class="icon-only" title="Hide/show the scenario list (privacy while screen sharing)">👁</button><button id="btnRefresh" class="icon-only" title="Refresh the list">↻</button><button id="tglHist" class="sec-toggle" title="Collapse/expand the section">▾</button></div></div>
+      <div id="privacyNote" style="display:none; font-size:12px; color:var(--muted); padding:10px 12px; line-height:1.5;">🔒 List hidden for screen sharing.<br>Click 👁 to show it again.</div>
       <div id="scenList"></div>
       <div id="folderHint"></div>
     </div>
@@ -193,36 +193,36 @@
         <g id="overlayLayer"></g>
       </g>
     </svg>
-    <button id="exitPresent" title="Quitter le mode présentation (Échap)">✕</button>
+    <button id="exitPresent" title="Exit presentation mode (Esc)">✕</button>
     <div id="zoomCtrl">
       <button id="zoomOut">−</button>
-      <button id="zoomFit" title="Ajuster">⤢</button>
+      <button id="zoomFit" title="Fit view">⤢</button>
       <button id="zoomIn">+</button>
     </div>
-    <div id="hintBar">Glisser sur le vide = sélection multiple (puis alignement à droite) • Shift+clic = ajouter • Espace+glisser ou clic molette = déplacer la vue • Pastille verte = lien • Alt+glisser = dupliquer • Ctrl+Z = annuler</div>
+    <div id="hintBar">Drag on empty space = multi-select (then align on the right) • Shift+click = add • Space+drag or middle-click = pan • Green handle = link • Alt+drag = duplicate • Ctrl+Z = undo</div>
   </div>
 
   <div id="propPanel">
-    <div class="sec-head"><h3><span>Propriétés</span></h3><button id="tglProp" class="sec-toggle" title="Replier/déplier le panneau">▸</button></div>
-    <div id="propBody"><div class="empty">Sélectionnez un élément du canvas pour modifier ses propriétés.</div></div>
+    <div class="sec-head"><h3><span>Properties</span></h3><button id="tglProp" class="sec-toggle" title="Collapse/expand the panel">▸</button></div>
+    <div id="propBody"><div class="empty">Select an element on the canvas to edit its properties.</div></div>
   </div>
 </main>
 
 <div id="provModal">
   <div class="modal-box">
-    <h2>🚀 Provisioning du scénario</h2>
+    <h2>🚀 Scenario provisioning</h2>
     <p id="provSummary" class="modal-sub"></p>
     <div class="prov-options">
       <div class="prov-card" id="provAuto">
-        <div class="prov-title">⚙️ Déploiement automatique</div>
-        <div class="prov-desc">Script bash <b>deploy-*.sh</b> pour hôte KVM/libvirt : création des VM via virt-install + cloud-init (IP statiques, profils CPU/RAM/disque par rôle), avec confirmations à chaque étape. Les machines Windows sont signalées pour installation manuelle.</div>
+        <div class="prov-title">⚙️ Automated deployment</div>
+        <div class="prov-desc">Bash script <b>deploy-*.sh</b> for a KVM/libvirt host: VM creation via virt-install + cloud-init (static IPs, CPU/RAM/disk profiles per role), with confirmation at each step. Windows machines are flagged for manual installation.</div>
       </div>
       <div class="prov-card" id="provManual">
-        <div class="prov-title">📋 Runbook manuel</div>
-        <div class="prov-desc">Document Markdown <b>runbook-*.md</b> : inventaire complet, topologie des liens, étapes de déploiement commentées machine par machine, regroupées par zone, avec checklist de validation.</div>
+        <div class="prov-title">📋 Manual runbook</div>
+        <div class="prov-desc">Markdown document <b>runbook-*.md</b>: full inventory, link topology, commented deployment steps machine by machine, grouped by zone, with a validation checklist.</div>
       </div>
     </div>
-    <div class="modal-actions"><button id="provClose">Fermer</button></div>
+    <div class="modal-actions"><button id="provClose">Close</button></div>
   </div>
 </div>
 
@@ -234,26 +234,26 @@
 const SVGNS = 'http://www.w3.org/2000/svg';
 const $ = s => document.querySelector(s);
 
-/* ================= État ================= */
+/* ================= State ================= */
 let scenario = newScenario();
-let selected = null;          // {kind:'node'|'link', id}
+let selected = null;          // {kind:'node'|'link'|'multi', id}
 let dirty = false;
 let view = {x:0, y:0, k:1};   // pan/zoom
 let dirHandle = null;         // File System Access
-let dirName = null;           // nom du dossier racine choisi
-let currentFile = null;       // nom de fichier du scénario chargé
+let dirName = null;           // name of the chosen root folder
+let currentFile = null;       // filename of the loaded scenario
 
 function newScenario(name){
-  return {app:'visulab', version:1, name:name||'Nouveau scénario',
+  return {app:'visulab', version:1, name:name||'New scenario',
           createdAt:new Date().toISOString(), updatedAt:null, nodes:[], links:[]};
 }
 const uid = () => 'e' + Math.random().toString(36).slice(2,9);
 
-/* ================= Palette de couleurs ================= */
+/* ================= Color palette ================= */
 const COLORS = ['#00B336','#00832A','#54C571','#A8E0B8','#2E7D5B','#1D2B22','#3B7DD8','#E8A33D','#D9534F','#8A8F98'];
 
-/* ================= Stencils (icônes) ================= */
-/* Chaque icône est dessinée en SVG dans un viewBox 0 0 40 40, en 'currentColor' */
+/* ================= Stencils (icons) ================= */
+/* Each icon is drawn in SVG within a 0 0 40 40 viewBox */
 const ICONS = {
   vbr:      c => `<rect x="5" y="7" width="30" height="26" rx="4" fill="${c}"/><path d="M13 14l7 13 7-13" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
   proxy:    c => `<rect x="6" y="10" width="28" height="20" rx="3" fill="${c}"/><path d="M12 20h16M23 15l5 5-5 5M17 15l-5 5 5 5" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
@@ -299,33 +299,33 @@ const STENCILS = [
     {type:'vbr', label:'VBR'}, {type:'proxy', label:'Proxy'}, {type:'repo', label:'Repository'},
     {type:'em', label:'Ent. Manager'}, {type:'vone', label:'Veeam ONE'}, {type:'agent', label:'Agent'},
   ]},
-  {cat:'Hyperviseurs', items:[
+  {cat:'Hypervisors', items:[
     {type:'esxi', label:'ESXi'}, {type:'hyperv', label:'Hyper-V'}, {type:'pve', label:'Proxmox VE'},
-    {type:'hyperviseur', label:'Hyperviseur'},
+    {type:'hyperviseur', label:'Hypervisor'},
   ]},
   {cat:'Infrastructure', items:[
-    {type:'vm', label:'VM'}, {type:'server', label:'Serveur'}, {type:'kubernetes', label:'Kubernetes'},
+    {type:'vm', label:'VM'}, {type:'server', label:'Server'}, {type:'kubernetes', label:'Kubernetes'},
     {type:'container', label:'Container'}, {type:'database', label:'Database'},
-    {type:'poste', label:'Poste'}, {type:'nas', label:'NAS'}, {type:'stockage', label:'Stockage'},
-    {type:'s3lock', label:'S3 Object Lock'}, {type:'s3local', label:'S3 local immuable'},
+    {type:'poste', label:'Workstation'}, {type:'nas', label:'NAS'}, {type:'stockage', label:'Storage'},
+    {type:'s3lock', label:'S3 Object Lock'}, {type:'s3local', label:'Local S3 (immutable)'},
     {type:'firewall', label:'Firewall'}, {type:'cloud', label:'Cloud'},
   ]},
   {cat:'Zones', items:[
-    {type:'zone', label:'Zone'}, {type:'dc', label:'Datacenter'}, {type:'room', label:'Salle'},
+    {type:'zone', label:'Zone'}, {type:'dc', label:'Datacenter'}, {type:'room', label:'Room'},
   ]},
-  {cat:'Formes', items:[
-    {type:'carre', label:'Carré'}, {type:'cercle', label:'Cercle'}, {type:'texte', label:'Texte'},
+  {cat:'Shapes', items:[
+    {type:'carre', label:'Square'}, {type:'cercle', label:'Circle'}, {type:'texte', label:'Text'},
   ]},
 ];
 const TYPE_LABEL = {};
 STENCILS.forEach(c => c.items.forEach(i => TYPE_LABEL[i.type] = i.label));
-// Types retirés de la palette mais conservés pour les anciens scénarios :
+// Types removed from the palette but kept for older scenarios:
 Object.assign(TYPE_LABEL, {wan:'WAN Accel.', ahv:'Nutanix AHV', kvm:'KVM', switch:'Switch',
-                           reseau:'Réseau', bdd:'Base SQL', pod:'Pod', losange:'Losange', triangle:'Triangle'});
+                           reseau:'Network', bdd:'SQL DB', pod:'Pod', losange:'Diamond', triangle:'Triangle'});
 const SHAPE_TYPES = ['carre','triangle','cercle','losange','texte'];
 const ZONE_TYPES = ['zone','pod','dc','room'];
 
-/* ================= Rendu palette ================= */
+/* ================= Palette rendering ================= */
 function buildPalette(){
   const pal = $('#palBody');
   const colState = JSON.parse(localStorage.getItem('visulab.palcats')||'{}');
@@ -351,7 +351,7 @@ function buildPalette(){
   });
 }
 
-/* Sections repliables (état mémorisé) */
+/* Collapsible sections (state remembered) */
 function setupCollapse(btnId, elId, storeKey, openIcon, closedIcon){
   const btn = $('#'+btnId), el = $('#'+elId);
   const apply = c => { el.classList.toggle('collapsed', c); btn.textContent = c ? closedIcon : openIcon; };
@@ -363,7 +363,7 @@ function setupCollapse(btnId, elId, storeKey, openIcon, closedIcon){
   apply(localStorage.getItem(storeKey)==='1');
 }
 
-/* ================= Rendu du canvas ================= */
+/* ================= Canvas rendering ================= */
 const svg = $('#svgCanvas'), viewport = $('#viewport'),
       nodesLayer = $('#nodesLayer'), linksLayer = $('#linksLayer'), overlay = $('#overlayLayer'),
       zonesLayer = $('#zonesLayer');
@@ -379,7 +379,7 @@ function svgPoint(evt){
   return {x:(p.x - view.x)/view.k, y:(p.y - view.y)/view.k};
 }
 
-const NODE_W = 96, NODE_H = 56; // zone icône
+const NODE_W = 96, NODE_H = 56; // icon area
 function nodeCenter(n){ return {x:n.x, y:n.y}; }
 
 function renderAll(){
@@ -425,7 +425,7 @@ function renderNode(n){
   }
   g.innerHTML = (n.description ? `<title>${esc(n.description)}</title>` : '') + shapeSvg;
 
-  // Pastille de création de lien
+  // Link-creation handle
   const h = document.createElementNS(SVGNS,'circle');
   h.setAttribute('class','handle'); h.setAttribute('r','6');
   const zw = n.w||320, zh = n.h||220;
@@ -434,7 +434,7 @@ function renderNode(n){
   h.style.display = 'none';
   g.appendChild(h);
 
-  // Poignée de redimensionnement (zones uniquement)
+  // Resize handle (zones only)
   let rh = null;
   if(isZone(n)){
     rh = document.createElementNS(SVGNS,'rect');
@@ -465,7 +465,7 @@ function shortRole(n){ const r = n.role||''; return r.length>14 ? r.slice(0,13)+
 function esc(s){ return String(s??'').replace(/[<>&"]/g, c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
 
 function edgePoint(from, to, n){
-  // point d'intersection approx. entre le segment centre→centre et la boîte du nœud n
+  // approx. intersection between the center-to-center segment and node n's box
   const dx = to.x-from.x, dy = to.y-from.y;
   const isShape = SHAPE_TYPES.includes(n.type);
   const hw = isZone(n) ? (n.w||320)/2 : (isShape?34:NODE_W/2);
@@ -496,11 +496,11 @@ function renderLink(l){
 }
 
 function refreshNode(n){ renderNode(n); scenario.links.filter(l=>l.from===n.id||l.to===n.id).forEach(renderLink); updateSelectionUI(); }
-/* ================= Interactions canvas ================= */
+/* ================= Canvas interactions ================= */
 let dragging = null, linking = null, panning = null, marquee = null, spaceDown = false, presenting = false;
-let selNodes = new Set();   // sélection multiple (ids de nœuds)
+let selNodes = new Set();   // multi-selection (node ids)
 
-// Drop depuis la palette
+// Drop from the palette
 const wrap = $('#canvasWrap');
 wrap.addEventListener('dragover', e => e.preventDefault());
 wrap.addEventListener('drop', e => {
@@ -513,18 +513,18 @@ wrap.addEventListener('drop', e => {
   const node = {id:uid(), type, x:Math.round(p.x/12)*12, y:Math.round(p.y/12)*12,
                 name:`${TYPE_LABEL[type]}-${String(count).padStart(2,'0')}`,
                 ip:'', role:'', os:'', description:'', color:'#00B336'};
-  if(type==='texte') node.name = 'Texte';
+  if(type==='texte') node.name = 'Text';
   if(ZONE_TYPES.includes(type)){ node.w = 320; node.h = 220; node.color = '#2E7D5B'; }
   scenario.nodes.push(node);
   renderNode(node); markDirty(); select('node', node.id);
 });
 
-// Déplacement de nœud (Alt+glisser = dupliquer ; une zone emporte son contenu ;
-// si le nœud fait partie d'une sélection multiple, tout le groupe suit)
+// Node dragging (Alt+drag = duplicate; a zone carries its content;
+// if the node is part of a multi-selection, the whole group follows)
 function startDragNode(n, e){
-  if(presenting) return; // lecture seule en mode présentation
+  if(presenting) return; // read-only in presentation mode
   if(e.button!==0 || linking) return;
-  if(e.shiftKey){ e.stopPropagation(); return; } // Shift+clic : géré au click (toggle)
+  if(e.shiftKey){ e.stopPropagation(); return; } // Shift+click: handled on click (toggle)
   e.stopPropagation();
   const p = svgPoint(e);
   let target = n, altClone = false;
@@ -557,13 +557,13 @@ function insideZone(m, z){
 function duplicateNode(src, ox=24, oy=24){
   const c = JSON.parse(JSON.stringify(src));
   c.id = uid(); c.x += ox; c.y += oy;
-  c.name = src.name + (src.type==='texte' ? '' : ' (copie)');
+  c.name = src.name + (src.type==='texte' ? '' : ' (copy)');
   scenario.nodes.push(c);
   renderNode(c); markDirty();
   return c;
 }
 
-// Création de lien
+// Link creation
 function startLinking(n, e){
   linking = {from:n};
   svg.classList.add('linking');
@@ -587,10 +587,10 @@ function finishLinking(target){
 }
 function cancelLinking(){ if(linking){ linking.line.remove(); linking=null; svg.classList.remove('linking'); } }
 
-// Pan (Espace+glisser ou clic molette) / cadre de sélection (glisser sur le vide)
+// Pan (Space+drag or middle-click) / selection marquee (drag on empty space)
 svg.addEventListener('mousedown', e => {
   if(e.target.closest('.node') || e.target.closest('.link')) return;
-  if(e.button===1 || spaceDown || presenting){ // en présentation : glisser = déplacer la vue
+  if(e.button===1 || spaceDown || presenting){ // in presentation: drag = pan the view
     panning = {x:e.clientX, y:e.clientY, vx:view.x, vy:view.y};
     e.preventDefault();
     return;
@@ -648,7 +648,7 @@ window.addEventListener('mousemove', e => {
 });
 window.addEventListener('mouseup', e => {
   if(dragging){ if(dragging.moved) markDirty(); if(dragging.altClone || dragging.moved) window._suppressClick = true; nodeEl(dragging.n.id)?.classList.remove('dragging'); dragging=null; }
-  if(linking){ // relâché hors d'un nœud
+  if(linking){ // released outside a node
     const t = document.elementFromPoint(e.clientX,e.clientY)?.closest?.('.node');
     if(t){ finishLinking(scenario.nodes.find(n=>n.id===t.dataset.id)); } else cancelLinking();
   }
@@ -700,7 +700,7 @@ function zoomFit(){
   applyView();
 }
 
-// Clavier
+// Keyboard
 window.addEventListener('keydown', e => {
   if(e.target.matches('input,textarea,select')) return;
   if(presenting){ if(e.key==='Escape') setPresent(false); return; }
@@ -735,7 +735,7 @@ window.addEventListener('keyup', e => {
   if(e.key===' '){ spaceDown = false; svg.style.cursor=''; }
 });
 
-/* ================= Annuler / Rétablir ================= */
+/* ================= Undo / Redo ================= */
 let undoStack=[], redoStack=[], histTimer=null, lastSnap=null;
 const snapState = () => JSON.stringify({name:scenario.name, nodes:scenario.nodes, links:scenario.links});
 function resetHistory(){ undoStack=[]; redoStack=[]; clearTimeout(histTimer); histTimer=null; lastSnap=snapState(); updateHistBtns(); }
@@ -779,7 +779,7 @@ function deleteSelected(){
   select(null); renderAll(); markDirty();
 }
 
-/* ================= Alignement / répartition ================= */
+/* ================= Align / distribute ================= */
 function halfW(n){ return isZone(n) ? (n.w||320)/2 : (SHAPE_TYPES.includes(n.type) ? 34 : NODE_W/2); }
 function halfH(n){ return isZone(n) ? (n.h||220)/2 : (SHAPE_TYPES.includes(n.type) ? 34 : NODE_H/2); }
 function alignSel(mode){
@@ -794,7 +794,7 @@ function alignSel(mode){
   if(mode==='distH' && ns.length>2){
     ns.sort((a,b)=>(a.x-b.x) || (a.y-b.y));
     const span = ns[ns.length-1].x - ns[0].x;
-    const need = 2*Math.max(...ns.map(halfW)) + 30;           // pas minimum sans chevauchement
+    const need = 2*Math.max(...ns.map(halfW)) + 30;           // minimum step without overlap
     const step = Math.max(span/(ns.length-1), need);
     ns.forEach((n,i)=>n.x=Math.round(ns[0].x+i*step));
   }
@@ -808,7 +808,7 @@ function alignSel(mode){
   renderAll(); markDirty();
 }
 
-/* ================= Sélection + propriétés ================= */
+/* ================= Selection + properties ================= */
 function select(kind, id, additive=false){
   if(kind==='node'){
     if(additive){
@@ -835,24 +835,24 @@ function updateSelectionUI(){
 
 function buildPropPanel(){
   const p = $('#propBody');
-  if(selected) { $('#propPanel').classList.remove('collapsed'); $('#tglProp').textContent='▸'; } // rouvrir à la sélection
-  if(!selected){ p.innerHTML = '<div class="empty">Sélectionnez un élément du canvas pour modifier ses propriétés.<br><br>Astuce : glissez sur le vide pour sélectionner plusieurs objets, Shift+clic pour ajouter.</div>'; return; }
+  if(selected) { $('#propPanel').classList.remove('collapsed'); $('#tglProp').textContent='▸'; } // reopen on selection
+  if(!selected){ p.innerHTML = '<div class="empty">Select an element on the canvas to edit its properties.<br><br>Tip: drag on empty space to select multiple objects, Shift+click to add.</div>'; return; }
 
   if(selected.kind==='multi'){
     p.innerHTML = `<div class="prop-group">
-      <label>${selNodes.size} objets sélectionnés</label>
-      <label>Aligner</label>
+      <label>${selNodes.size} objects selected</label>
+      <label>Align</label>
       <div class="align-grid">
-        <button data-al="left">⇤ Gauche</button><button data-al="cx">◫ Centrer</button><button data-al="right">⇥ Droite</button>
-        <button data-al="top">⤒ Haut</button><button data-al="cy">⊟ Milieu</button><button data-al="bottom">⤓ Bas</button>
+        <button data-al="left">⇤ Left</button><button data-al="cx">◫ Center</button><button data-al="right">⇥ Right</button>
+        <button data-al="top">⤒ Top</button><button data-al="cy">⊟ Middle</button><button data-al="bottom">⤓ Bottom</button>
       </div>
-      <label>Répartir (3 objets ou +)</label>
+      <label>Distribute (3+ objects)</label>
       <div class="align-grid">
         <button data-al="distH" ${selNodes.size<3?'disabled':''}>↔ Horizontal</button>
         <button data-al="distV" ${selNodes.size<3?'disabled':''}>↕ Vertical</button>
       </div>
     </div>
-    <div class="prop-actions"><button class="danger" id="pDelete">🗑 Supprimer (${selNodes.size})</button></div>`;
+    <div class="prop-actions"><button class="danger" id="pDelete">🗑 Delete (${selNodes.size})</button></div>`;
     p.querySelectorAll('[data-al]').forEach(b => b.addEventListener('click', () => alignSel(b.dataset.al)));
     $('#pDelete').addEventListener('click', deleteSelected);
     return;
@@ -863,15 +863,15 @@ function buildPropPanel(){
     const isShape = SHAPE_TYPES.includes(n.type) || isZone(n);
     p.innerHTML = `<div class="prop-group">
       <label>Type</label><input type="text" value="${esc(TYPE_LABEL[n.type])}" disabled>
-      <label>Nom</label><input type="text" id="pName" value="${esc(n.name)}">
-      <label>Description</label><textarea id="pDesc" placeholder="Rôle de cet objet dans le scénario, contexte, particularités…">${esc(n.description||'')}</textarea>
+      <label>Name</label><input type="text" id="pName" value="${esc(n.name)}">
+      <label>Description</label><textarea id="pDesc" placeholder="Role of this object in the scenario, context, specifics…">${esc(n.description||'')}</textarea>
       ${isShape?'':`
-      <label>Adresse IP</label><input type="text" id="pIp" value="${esc(n.ip)}" placeholder="192.168.1.10">
-      <label>Rôle</label><input type="text" id="pRole" value="${esc(n.role)}" placeholder="Backup server, proxy…">
+      <label>IP address</label><input type="text" id="pIp" value="${esc(n.ip)}" placeholder="192.168.1.10">
+      <label>Role</label><input type="text" id="pRole" value="${esc(n.role)}" placeholder="Backup server, proxy…">
       <label>OS</label><input type="text" id="pOs" value="${esc(n.os)}" placeholder="Windows Server 2025…">`}
-      <label>Couleur</label><div class="swatches" id="pColors"></div>
+      <label>Color</label><div class="swatches" id="pColors"></div>
     </div>
-    <div class="prop-actions"><button id="pDup">⧉ Dupliquer</button><button class="danger" id="pDelete">🗑 Supprimer</button></div>`;
+    <div class="prop-actions"><button id="pDup">⧉ Duplicate</button><button class="danger" id="pDelete">🗑 Delete</button></div>`;
     $('#pDup').addEventListener('click', () => { const c = duplicateNode(n); select('node', c.id); });
     bindProp('pName', v => { n.name=v; refreshNode(n); });
     bindProp('pDesc', v => { n.description=v; refreshNode(n); });
@@ -884,18 +884,18 @@ function buildPropPanel(){
   } else {
     const l = scenario.links.find(x=>x.id===selected.id); if(!l) return;
     p.innerHTML = `<div class="prop-group">
-      <label>Libellé du lien</label><input type="text" id="pLabel" value="${esc(l.label)}" placeholder="réplication, backup…">
-      <label>Description</label><textarea id="pDesc" placeholder="Nature du flux, protocole, sens…">${esc(l.description||'')}</textarea>
+      <label>Link label</label><input type="text" id="pLabel" value="${esc(l.label)}" placeholder="replication, backup…">
+      <label>Description</label><textarea id="pDesc" placeholder="Flow type, protocol, direction…">${esc(l.description||'')}</textarea>
       <label>Style</label><select id="pStyle">
-        <option value="solid" ${l.style==='solid'?'selected':''}>Trait plein</option>
-        <option value="dashed" ${l.style==='dashed'?'selected':''}>Pointillés</option></select>
-      <label>Flèches</label><select id="pArrows">
-        <option value="none" ${l.arrows==='none'?'selected':''}>Aucune</option>
-        <option value="one" ${l.arrows==='one'?'selected':''}>Simple →</option>
+        <option value="solid" ${l.style==='solid'?'selected':''}>Solid</option>
+        <option value="dashed" ${l.style==='dashed'?'selected':''}>Dashed</option></select>
+      <label>Arrows</label><select id="pArrows">
+        <option value="none" ${l.arrows==='none'?'selected':''}>None</option>
+        <option value="one" ${l.arrows==='one'?'selected':''}>Single →</option>
         <option value="both" ${l.arrows==='both'?'selected':''}>Double ↔</option></select>
-      <label>Couleur</label><div class="swatches" id="pColors"></div>
+      <label>Color</label><div class="swatches" id="pColors"></div>
     </div>
-    <div class="prop-actions"><button class="danger" id="pDelete">🗑 Supprimer</button></div>`;
+    <div class="prop-actions"><button class="danger" id="pDelete">🗑 Delete</button></div>`;
     bindProp('pLabel', v => { l.label=v; renderLink(l); updateSelectionUI(); });
     bindProp('pDesc', v => { l.description=v; });
     $('#pStyle').addEventListener('change', e => { l.style=e.target.value; renderLink(l); updateSelectionUI(); markDirty(); });
@@ -917,10 +917,10 @@ function buildSwatches(current, fn){
     box.appendChild(s);
   });
 }
-/* ================= Stockage : fichiers JSON ================= */
+/* ================= Storage: JSON files ================= */
 const FS_OK = 'showDirectoryPicker' in window;
 
-// IndexedDB minimal pour mémoriser le dossier choisi
+// Minimal IndexedDB to remember the chosen folder
 function idb(){ return new Promise((res,rej)=>{ const r=indexedDB.open('visulab',1);
   r.onupgradeneeded = ()=> r.result.createObjectStore('kv');
   r.onsuccess = ()=>res(r.result); r.onerror = ()=>rej(r.error); }); }
@@ -928,7 +928,7 @@ async function idbSet(k,v){ const db=await idb(); return new Promise((res,rej)=>
 async function idbGet(k){ const db=await idb(); return new Promise((res,rej)=>{ const t=db.transaction('kv','readonly'); const q=t.objectStore('kv').get(k); q.onsuccess=()=>res(q.result); q.onerror=()=>rej(q.error); }); }
 
 async function pickFolder(){
-  if(!FS_OK){ toast("Votre navigateur ne supporte pas l'accès aux dossiers — utilisez Exporter/Importer."); return; }
+  if(!FS_OK){ toast("Your browser does not support folder access — use Export/Import instead."); return; }
   try{
     const root = await window.showDirectoryPicker({mode:'readwrite', id:'visulab'});
     dirHandle = root;
@@ -938,8 +938,8 @@ async function pickFolder(){
     await idbSet('dirName', dirName);
     updateFolderHint();
     await refreshList();
-    toast(`Dossier de travail : ${dirName} — les scénarios y seront enregistrés directement en JSON.`);
-  }catch(e){ if(e.name!=='AbortError') toast('Impossible d\'accéder au dossier : '+e.message); }
+    toast(`Working folder: ${dirName} — scenarios will be saved there directly as JSON.`);
+  }catch(e){ if(e.name!=='AbortError') toast('Could not access the folder: '+e.message); }
 }
 
 async function restoreFolder(){
@@ -961,7 +961,7 @@ async function ensurePerm(){
     window._needPerm = p !== 'granted';
     return p === 'granted';
   }catch(e){
-    // requestPermission sans geste utilisateur, ou handle invalide
+    // requestPermission without a user gesture, or invalid handle
     return false;
   }finally{
     updateFolderHint();
@@ -970,9 +970,9 @@ async function ensurePerm(){
 
 function slug(name){ return (name||'scenario').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'scenario'; }
 
-/* --- Sauvegarde --- */
+/* --- Save --- */
 async function saveScenario(){
-  scenario.name = $('#scenarioName').value.trim() || 'Sans nom';
+  scenario.name = $('#scenarioName').value.trim() || 'Untitled';
   scenario.updatedAt = new Date().toISOString();
   const fname = currentFile || (slug(scenario.name)+'.json');
   const json = JSON.stringify(scenario, null, 2);
@@ -984,9 +984,9 @@ async function saveScenario(){
       await w.write(json); await w.close();
       currentFile = fname;
       clearDirty(); await refreshList();
-      toast(`Enregistré : ${fname}`);
+      toast(`Saved: ${fname}`);
       return;
-    }catch(e){ toast('Erreur d\'écriture : '+e.message); }
+    }catch(e){ toast('Write error: '+e.message); }
   }
   // Secours : localStorage
   const store = JSON.parse(localStorage.getItem('visulab.scenarios')||'{}');
@@ -994,10 +994,10 @@ async function saveScenario(){
   localStorage.setItem('visulab.scenarios', JSON.stringify(store));
   currentFile = fname;
   clearDirty(); await refreshList();
-  toast('Enregistré dans le navigateur (choisissez un dossier pour des fichiers réels).');
+  toast('Saved in the browser (choose a folder for real files).');
 }
 
-/* --- Liste / historique --- */
+/* --- List / history --- */
 async function listScenarios(){
   const out = [];
   if(dirHandle && !window._needPerm){
@@ -1024,16 +1024,16 @@ async function refreshList(){
   await ensurePerm().catch(()=>{});
   const list = await listScenarios();
   const box = $('#scenList'); box.innerHTML='';
-  if(!list.length){ box.innerHTML = '<div style="padding:10px 12px;font-size:12px;color:var(--muted)">Aucun scénario enregistré.</div>'; }
+  if(!list.length){ box.innerHTML = '<div style="padding:10px 12px;font-size:12px;color:var(--muted)">No saved scenarios.</div>'; }
   list.forEach(s => {
     const el = document.createElement('div');
     el.className = 'scen-item' + (s.file===currentFile?' active':'');
-    const d = s.updated ? new Date(s.updated).toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'2-digit'}) : '';
-    el.innerHTML = `<div class="grow">${esc(s.display)}<div class="meta">${d}${s.src==='ls'?' • navigateur':''}</div></div><button class="del" title="Supprimer">✕</button>`;
+    const d = s.updated ? new Date(s.updated).toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}) : '';
+    el.innerHTML = `<div class="grow">${esc(s.display)}<div class="meta">${d}${s.src==='ls'?' • browser':''}</div></div><button class="del" title="Delete">✕</button>`;
     el.addEventListener('click', e => { if(!e.target.classList.contains('del')) loadScenario(s); });
     el.querySelector('.del').addEventListener('click', async e => {
       e.stopPropagation();
-      if(!confirm(`Supprimer « ${s.display} » ?`)) return;
+      if(!confirm(`Delete "${s.display}"?`)) return;
       if(s.src==='fs' && dirHandle){ try{ await dirHandle.removeEntry(s.file); }catch(err){} }
       else { const st = JSON.parse(localStorage.getItem('visulab.scenarios')||'{}'); delete st[s.file]; localStorage.setItem('visulab.scenarios', JSON.stringify(st)); }
       if(currentFile===s.file) currentFile=null;
@@ -1045,7 +1045,7 @@ async function refreshList(){
 }
 
 async function loadScenario(s){
-  if(dirty && !confirm('Modifications non enregistrées — continuer sans enregistrer ?')) return;
+  if(dirty && !confirm('Unsaved changes — continue without saving?')) return;
   try{
     let data;
     if(s.src==='fs'){
@@ -1056,13 +1056,13 @@ async function loadScenario(s){
       data = JSON.parse(localStorage.getItem('visulab.scenarios')||'{}')[s.file];
     }
     applyScenario(data, s.file);
-  }catch(e){ toast('Chargement impossible : '+e.message); }
+  }catch(e){ toast('Could not load: '+e.message); }
 }
 
 function applyScenario(data, file){
   scenario = Object.assign(newScenario(), data);
   scenario.nodes = scenario.nodes||[]; scenario.links = scenario.links||[];
-  // Migration : anciens champs "notes" fusionnés dans "description"
+  // Migration: legacy "notes" fields merged into "description"
   scenario.nodes.forEach(n => {
     if(n.notes){ n.description = n.description ? n.description+'\n'+n.notes : n.notes; delete n.notes; }
   });
@@ -1072,9 +1072,9 @@ function applyScenario(data, file){
   resetHistory();
 }
 
-/* --- Nouveau / Export / Import --- */
+/* --- New / Export / Import --- */
 $('#btnNew').addEventListener('click', () => {
-  if(dirty && !confirm('Modifications non enregistrées — continuer ?')) return;
+  if(dirty && !confirm('Unsaved changes — continue?')) return;
   applyScenario(newScenario(), null);
 });
 $('#btnSave').addEventListener('click', saveScenario);
@@ -1082,27 +1082,27 @@ $('#btnFolder').addEventListener('click', pickFolder);
 $('#btnRefresh').addEventListener('click', async () => {
   if(dirHandle){
     const ok = await ensurePerm();
-    if(!ok){ toast('Accès au dossier refusé — cliquez sur 📁 Dossier pour le re-sélectionner.'); await refreshList(); return; }
+    if(!ok){ toast('Folder access denied — click 📁 Folder to select it again.'); await refreshList(); return; }
   }
   await refreshList();
-  toast(dirHandle ? `Liste actualisée — dossier : ${dirName||'?'}` : 'Liste actualisée (aucun dossier choisi).');
+  toast(dirHandle ? `List refreshed — folder: ${dirName||'?'}` : 'List refreshed (no folder selected).');
 });
 
 $('#btnExport').addEventListener('click', () => {
-  scenario.name = $('#scenarioName').value.trim() || 'Sans nom';
+  scenario.name = $('#scenarioName').value.trim() || 'Untitled';
   const blob = new Blob([JSON.stringify(scenario,null,2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = slug(scenario.name)+'.json';
   a.click(); URL.revokeObjectURL(a.href);
 });
-/* --- Export image (PNG / SVG) --- */
+/* --- Image export (PNG / SVG) --- */
 function contentBounds(pad){
   const xs = scenario.nodes.flatMap(n => isZone(n) ? [n.x-(n.w||320)/2, n.x+(n.w||320)/2] : [n.x-70, n.x+70]);
   const ys = scenario.nodes.flatMap(n => isZone(n) ? [n.y-(n.h||220)/2, n.y+(n.h||220)/2] : [n.y-50, n.y+65]);
   return {minX:Math.min(...xs)-pad, maxX:Math.max(...xs)+pad, minY:Math.min(...ys)-pad, maxY:Math.max(...ys)+pad};
 }
 function buildExportSvg(){
-  if(!scenario.nodes.length){ toast('Rien à exporter — le canvas est vide.'); return null; }
+  if(!scenario.nodes.length){ toast('Nothing to export — the canvas is empty.'); return null; }
   const b = contentBounds(40), w = Math.round(b.maxX-b.minX), h = Math.round(b.maxY-b.minY);
   const defs = svg.querySelector('defs').innerHTML;
   const style = `text{font-family:'Segoe UI',Arial,sans-serif}` +
@@ -1130,18 +1130,18 @@ $('#btnPng').addEventListener('click', () => {
   const img = new Image();
   img.onload = () => {
     const c = document.createElement('canvas');
-    c.width = img.width*2; c.height = img.height*2; // export 2x
+    c.width = img.width*2; c.height = img.height*2; // 2x export
     c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
     c.toBlob(b => { download(slug($('#scenarioName').value)+'.png', b); URL.revokeObjectURL(url); }, 'image/png');
   };
-  img.onerror = () => { URL.revokeObjectURL(url); toast('Export PNG impossible — essayez SVG.'); };
+  img.onerror = () => { URL.revokeObjectURL(url); toast('PNG export failed — try SVG.'); };
   img.src = url;
 });
 
-/* ================= Provisioning (script auto + runbook manuel) ================= */
+/* ================= Provisioning (automated script + manual runbook) ================= */
 const MACHINE_TYPES = ['vbr','proxy','repo','wan','em','vone','agent','server','poste','nas','bdd','stockage','vm','kubernetes','container','database','s3local'];
 const HYPER_TYPES = ['esxi','hyperv','pve','ahv','kvm','hyperviseur'];
-// Profils par rôle : [vCPU, RAM Mo, disque Go]
+// Profiles per role: [vCPU, RAM MB, disk GB]
 const PROFILES = {vbr:[4,8192,100], em:[2,4096,60], vone:[4,8192,80], proxy:[2,4096,50], repo:[2,4096,200],
                   wan:[2,4096,60], agent:[1,2048,40], server:[2,4096,60], poste:[2,4096,60],
                   nas:[2,4096,200], bdd:[2,8192,100], stockage:[2,4096,200], s3local:[4,8192,500],
@@ -1156,55 +1156,55 @@ function zoneOf(n){
   return zs[0] || null;
 }
 const nodeName = id => (scenario.nodes.find(n=>n.id===id)||{}).name || '?';
-const today = () => new Date().toLocaleDateString('fr-FR');
+const today = () => new Date().toLocaleDateString('en-GB');
 
 function genDeployScript(){
   const ms = machines();
   const lin = ms.filter(m => !isWin(m)), win = ms.filter(isWin);
   let s = `#!/usr/bin/env bash
 #===============================================================================
-# deploy-${slug(scenario.name)}.sh — généré par VisuLab le ${today()}
-# Scénario : ${scenario.name}
+# deploy-${slug(scenario.name)}.sh — generated by VisuLab on ${today()}
+# Scenario: ${scenario.name}
 #
-# Déploiement automatique des machines sur un hôte KVM/libvirt.
-# Base : image cloud Debian + cloud-init (IP statique, utilisateur, SSH).
-# Adapter les variables de la section CONFIGURATION avant exécution.
+# Automated machine deployment on a KVM/libvirt host.
+# Base: Debian cloud image + cloud-init (static IP, user, SSH).
+# Adjust the variables in the CONFIGURATION section before running.
 #
-# Inventaire du scénario :
-${ms.map(m => `#   - ${m.name.padEnd(18)} ${(m.ip||'(pas d\'IP)').padEnd(16)} ${m.role||TYPE_LABEL[m.type]}${m.os?' — '+m.os:''}`).join('\n')}
+# Scenario inventory:
+${ms.map(m => `#   - ${m.name.padEnd(18)} ${(m.ip||'(no IP)').padEnd(16)} ${m.role||TYPE_LABEL[m.type]}${m.os?' — '+m.os:''}`).join('\n')}
 #===============================================================================
 set -Eeuo pipefail
-trap 'echo -e "\\033[1;31m[ERREUR]\\033[0m ligne $LINENO — arrêt." >&2' ERR
+trap 'echo -e "\\033[1;31m[ERROR]\\033[0m line $LINENO — aborting." >&2' ERR
 
-#=== CONFIGURATION (à adapter) =================================================
-BRIDGE="br0"                                    # bridge réseau de l'hôte
+#=== CONFIGURATION (adjust as needed) =================================================
+BRIDGE="br0"                                    # host network bridge
 BASE_IMG="/var/lib/libvirt/images/debian-13-genericcloud-amd64.qcow2"
 IMG_DIR="/var/lib/libvirt/images"
-PREFIX="24"                                     # masque réseau
-GATEWAY="192.168.1.254"                         # passerelle
-DNS="192.168.1.254"                             # serveur DNS
-VM_USER="ae-user"                               # utilisateur créé dans les VM
+PREFIX="24"                                     # network prefix
+GATEWAY="192.168.1.254"                         # gateway
+DNS="192.168.1.254"                             # DNS server
+VM_USER="ae-user"                               # user created inside the VMs
 SSH_PUBKEY="$(cat ~/.ssh/id_ed25519.pub 2>/dev/null || cat ~/.ssh/id_rsa.pub 2>/dev/null || echo '')"
 
-#=== FONCTIONS =================================================================
+#=== FUNCTIONS =================================================================
 log(){  echo -e "\\033[1;32m[+]\\033[0m $*"; }
 warn(){ echo -e "\\033[1;33m[!]\\033[0m $*"; }
-confirm(){ read -rp "$1 [Entrée pour continuer, Ctrl+C pour annuler] "; }
+confirm(){ read -rp "$1 [Enter to continue, Ctrl+C to abort] "; }
 
-require(){ command -v "$1" >/dev/null || { warn "outil manquant : $1"; exit 1; }; }
+require(){ command -v "$1" >/dev/null || { warn "missing tool: $1"; exit 1; }; }
 require virt-install; require qemu-img; require cloud-localds
 
-# create_vm NOM IP VCPU RAM_MO DISQUE_GO "commentaire"
+# create_vm NAME IP VCPU RAM_MB DISK_GB "comment"
 create_vm(){
   local NAME="$1" IP="$2" VCPU="$3" RAM="$4" DISK="$5" DESC="$6"
   local VM_IMG="$IMG_DIR/$NAME.qcow2" SEED="$IMG_DIR/$NAME-seed.iso"
 
   if virsh dominfo "$NAME" >/dev/null 2>&1; then
-    warn "$NAME existe déjà — ignoré."
+    warn "$NAME already exists — skipped."
     return 0
   fi
 
-  log "[$NAME] disque \${DISK}G (overlay sur l'image de base)"
+  log "[$NAME] disk \${DISK}G (overlay on the base image)"
   qemu-img create -f qcow2 -b "$BASE_IMG" -F qcow2 "$VM_IMG" "\${DISK}G" >/dev/null
 
   log "[$NAME] seed cloud-init (IP $IP/$PREFIX, GW $GATEWAY)"
@@ -1232,99 +1232,99 @@ EOF
   cloud-localds --network-config "$TMP/network-config" "$SEED" "$TMP/user-data"
   rm -rf "$TMP"
 
-  log "[$NAME] création VM : \${VCPU} vCPU, \${RAM} Mo — $DESC"
+  log "[$NAME] creating VM: \${VCPU} vCPU, \${RAM} MB — $DESC"
   virt-install --name "$NAME" --memory "$RAM" --vcpus "$VCPU" \\
     --disk "$VM_IMG,bus=virtio" --disk "$SEED,device=cdrom" \\
     --network "bridge=$BRIDGE,model=virtio" \\
     --os-variant debian12 --import --noautoconsole >/dev/null
-  log "[$NAME] démarrée — ssh $VM_USER@$IP quand cloud-init a fini."
+  log "[$NAME] started — ssh $VM_USER@$IP once cloud-init completes."
 }
 
-#=== DÉPLOIEMENT ===============================================================
-echo "Scénario : ${scenario.name} — ${lin.length} VM Linux à déployer${win.length?`, ${win.length} machine(s) Windows à traiter manuellement`:''}."
-confirm "Démarrer le déploiement ?"
+#=== DEPLOYMENT ===============================================================
+echo "Scenario: ${scenario.name} — ${lin.length} Linux VM(s) to deploy${win.length?`, ${win.length} Windows machine(s) to handle manually`:''}."
+confirm "Start deployment?"
 `;
   lin.forEach(m => {
     const [c,r,d] = prof(m);
     const z = zoneOf(m);
     if(!m.ip){
-      s += `\n# --- ${m.name} : PAS D'ADRESSE IP dans le scénario — complétez puis dé-commentez :\n# create_vm "${m.name}" "A.B.C.D" ${c} ${r} ${d} "${(m.role||TYPE_LABEL[m.type]).replace(/"/g,'')}"\nwarn "${m.name} ignorée : pas d'IP définie dans VisuLab."\n`;
+      s += `\n# --- ${m.name} : NO IP ADDRESS in the scenario — fill it in, then uncomment:\n# create_vm "${m.name}" "A.B.C.D" ${c} ${r} ${d} "${(m.role||TYPE_LABEL[m.type]).replace(/"/g,'')}"\nwarn "${m.name} skipped: no IP defined in VisuLab."\n`;
     } else {
-      s += `\n# --- ${m.name} — ${m.role||TYPE_LABEL[m.type]}${z?` (zone : ${z.name})`:''}${m.description?`\n# ${m.description.replace(/\n/g,'\n# ')}`:''}\nconfirm "Créer ${m.name} (${m.ip}) ?"\ncreate_vm "${m.name}" "${m.ip}" ${c} ${r} ${d} "${(m.role||TYPE_LABEL[m.type]).replace(/"/g,'')}"\n`;
+      s += `\n# --- ${m.name} — ${m.role||TYPE_LABEL[m.type]}${z?` (zone: ${z.name})`:''}${m.description?`\n# ${m.description.replace(/\n/g,'\n# ')}`:''}\nconfirm "Create ${m.name} (${m.ip})?"\ncreate_vm "${m.name}" "${m.ip}" ${c} ${r} ${d} "${(m.role||TYPE_LABEL[m.type]).replace(/"/g,'')}"\n`;
     }
   });
   if(win.length){
-    s += `\n#=== MACHINES WINDOWS (installation manuelle requise) ==========================\n`;
+    s += `\n#=== WINDOWS MACHINES (manual installation required) ==========================\n`;
     win.forEach(m => {
       const [c,r,d] = prof(m);
-      s += `warn "À créer manuellement : ${m.name} (${m.ip||'IP ?'}) — ${m.os} — suggéré ${c} vCPU / ${r} Mo / ${d} Go. Voir le runbook."\n`;
+      s += `warn "Create manually: ${m.name} (${m.ip||'IP?'}) — ${m.os} — suggested ${c} vCPU / ${r} MB / ${d} GB. See the runbook."\n`;
     });
   }
-  s += `\nlog "Déploiement terminé. Vérification : virsh list --all"\nvirsh list --all\n`;
+  s += `\nlog "Deployment finished. Check: virsh list --all"\nvirsh list --all\n`;
   return s;
 }
 
 function genRunbook(){
   const ms = machines(), hs = hypervisors();
   const zones = scenario.nodes.filter(isZone);
-  let s = `# Runbook — ${scenario.name}\n\n*Généré par VisuLab le ${today()} — déploiement manuel, étapes commentées.*\n\n`;
-  s += `## 1. Inventaire\n\n| Machine | IP | Rôle | OS | Description |\n|---|---|---|---|---|\n`;
+  let s = `# Runbook — ${scenario.name}\n\n*Generated by VisuLab on ${today()} — manual deployment with commented steps.*\n\n`;
+  s += `## 1. Inventory\n\n| Machine | IP | Role | OS | Description |\n|---|---|---|---|---|\n`;
   ms.forEach(m => { s += `| **${m.name}** | ${m.ip||'—'} | ${m.role||TYPE_LABEL[m.type]} | ${m.os||'—'} | ${(m.description||'').replace(/\n/g,' ')||'—'} |\n`; });
   if(hs.length){
-    s += `\n## 2. Prérequis — hyperviseurs / hôtes\n\n`;
-    hs.forEach(h => { s += `- **${h.name}** (${TYPE_LABEL[h.type]}${h.ip?`, ${h.ip}`:''}) : opérationnel, accessible, stockage et réseau prêts.${h.description?` ${h.description.replace(/\n/g,' ')}`:''}\n`; });
+    s += `\n## 2. Prerequisites — hypervisors / hosts\n\n`;
+    hs.forEach(h => { s += `- **${h.name}** (${TYPE_LABEL[h.type]}${h.ip?`, ${h.ip}`:''}): operational, reachable, storage and network ready.${h.description?` ${h.description.replace(/\n/g,' ')}`:''}\n`; });
   }
-  s += `\n## 3. Topologie — liens à établir\n\n`;
+  s += `\n## 3. Topology — links to establish\n\n`;
   if(scenario.links.length){
     scenario.links.forEach(l => { s += `- **${nodeName(l.from)}** ${l.arrows==='both'?'↔':'→'} **${nodeName(l.to)}**${l.label?` : ${l.label}`:''}${l.description?` — ${l.description.replace(/\n/g,' ')}`:''}\n`; });
-  } else s += `_Aucun lien défini dans le scénario._\n`;
-  s += `\n## 4. Déploiement machine par machine\n`;
+  } else s += `_No links defined in the scenario._\n`;
+  s += `\n## 4. Machine-by-machine deployment\n`;
   const groups = new Map();
   ms.forEach(m => {
-    const z = zoneOf(m), key = z ? z.name : 'Hors zone';
+    const z = zoneOf(m), key = z ? z.name : 'No zone';
     if(!groups.has(key)) groups.set(key, []);
     groups.get(key).push(m);
   });
   let step = 0;
   groups.forEach((list, zname) => {
-    s += `\n### Zone : ${zname}\n`;
+    s += `\n### Zone: ${zname}\n`;
     list.forEach(m => {
       step++;
       const [c,r,d] = prof(m);
       s += `\n#### 4.${step} ${m.name}${m.ip?` — ${m.ip}`:''}\n\n`;
       if(m.description) s += `> ${m.description.replace(/\n/g,'\n> ')}\n\n`;
-      s += `1. **Créer la machine** sur l'hyperviseur cible — dimensionnement suggéré : ${c} vCPU, ${Math.round(r/1024)} Go RAM, ${d} Go disque. <!-- adapter selon la volumétrie réelle de la démo -->\n`;
-      s += `2. **Installer l'OS** : ${m.os||'à définir'}.${isWin(m)?' <!-- ISO Windows + licence éval, activer RDP après install -->':' <!-- image cloud + cloud-init possible, voir script auto -->'}\n`;
-      s += `3. **Configurer le réseau** : IP statique ${m.ip||'(à définir)'}, tester la passerelle et le DNS. <!-- ping GW, ping DNS, résolution de nom -->\n`;
-      s += `4. **Configurer le rôle** : ${m.role||TYPE_LABEL[m.type]}. <!-- installation du composant, comptes de service, pare-feu local -->\n`;
+      s += `1. **Create the machine** on the target hypervisor — suggested sizing: ${c} vCPU, ${Math.round(r/1024)} GB RAM, ${d} GB disk. <!-- adjust to the actual demo workload -->\n`;
+      s += `2. **Install the OS**: ${m.os||'to be defined'}.${isWin(m)?' <!-- Windows ISO + eval license, enable RDP after install -->':' <!-- cloud image + cloud-init possible, see the automated script -->'}\n`;
+      s += `3. **Configure networking**: static IP ${m.ip||'(to be defined)'}, test the gateway and DNS. <!-- ping GW, ping DNS, name resolution -->\n`;
+      s += `4. **Configure the role**: ${m.role||TYPE_LABEL[m.type]}. <!-- component installation, service accounts, local firewall -->\n`;
       const lks = scenario.links.filter(l=>l.from===m.id||l.to===m.id);
-      if(lks.length) s += `5. **Valider les flux** : ${lks.map(l=>`${nodeName(l.from)}→${nodeName(l.to)}${l.label?` (${l.label})`:''}`).join(', ')}. <!-- test de port / connexion applicative -->\n`;
+      if(lks.length) s += `5. **Validate the flows**: ${lks.map(l=>`${nodeName(l.from)}→${nodeName(l.to)}${l.label?` (${l.label})`:''}`).join(', ')}. <!-- port test / application connection -->\n`;
     });
   });
-  s += `\n## 5. Checklist finale\n\n`;
-  ms.forEach(m => { s += `- [ ] ${m.name} : joignable${m.ip?` sur ${m.ip}`:''}, rôle « ${m.role||TYPE_LABEL[m.type]} » opérationnel\n`; });
-  scenario.links.forEach(l => { s += `- [ ] Flux ${nodeName(l.from)} → ${nodeName(l.to)}${l.label?` (${l.label})`:''} validé\n`; });
+  s += `\n## 5. Final checklist\n\n`;
+  ms.forEach(m => { s += `- [ ] ${m.name}: reachable${m.ip?` at ${m.ip}`:''}, role "${m.role||TYPE_LABEL[m.type]}" operational\n`; });
+  scenario.links.forEach(l => { s += `- [ ] Flow ${nodeName(l.from)} → ${nodeName(l.to)}${l.label?` (${l.label})`:''} validated\n`; });
   return s;
 }
 
 $('#btnProv').addEventListener('click', () => {
   const ms = machines();
-  if(!ms.length){ toast('Aucune machine dans le scénario — ajoutez des éléments (VBR, serveur…) d\'abord.'); return; }
+  if(!ms.length){ toast('No machines in the scenario — add elements (VBR, server…) first.'); return; }
   const noIp = ms.filter(m=>!m.ip).length;
-  $('#provSummary').textContent = `${ms.length} machine(s) détectée(s), ${scenario.links.length} lien(s)` +
-    (noIp ? ` — ⚠ ${noIp} machine(s) sans adresse IP` : '') + '.';
+  $('#provSummary').textContent = `${ms.length} machine(s) detected, ${scenario.links.length} link(s)` +
+    (noIp ? ` — ⚠ ${noIp} machine(s) without an IP address` : '') + '.';
   $('#provModal').classList.add('open');
 });
 $('#provClose').addEventListener('click', () => $('#provModal').classList.remove('open'));
 $('#provModal').addEventListener('click', e => { if(e.target.id==='provModal') $('#provModal').classList.remove('open'); });
 $('#provAuto').addEventListener('click', () => {
   download(`deploy-${slug(scenario.name)}.sh`, new Blob([genDeployScript()], {type:'text/x-shellscript'}));
-  toast('Script généré — chmod +x puis exécution sur l\'hôte KVM.');
+  toast('Script generated — chmod +x, then run it on the KVM host.');
   $('#provModal').classList.remove('open');
 });
 $('#provManual').addEventListener('click', () => {
   download(`runbook-${slug(scenario.name)}.md`, new Blob([genRunbook()], {type:'text/markdown'}));
-  toast('Runbook généré — étapes commentées en Markdown.');
+  toast('Runbook generated — commented steps in Markdown.');
   $('#provModal').classList.remove('open');
 });
 
@@ -1333,14 +1333,14 @@ $('#fileInput').addEventListener('change', async e => {
   const f = e.target.files[0]; if(!f) return;
   try{
     const data = JSON.parse(await f.text());
-    if(data.app!=='visulab' && !data.nodes) throw new Error('format non reconnu');
+    if(data.app!=='visulab' && !data.nodes) throw new Error('unrecognized format');
     applyScenario(data, null); markDirty();
-    toast('Scénario importé — pensez à Enregistrer.');
-  }catch(err){ toast('Import impossible : '+err.message); }
+    toast('Scenario imported — remember to Save.');
+  }catch(err){ toast('Import failed: '+err.message); }
   e.target.value = '';
 });
 
-/* --- Divers --- */
+/* --- Misc --- */
 $('#scenarioName').addEventListener('input', () => { markDirty(); scenario.name = $('#scenarioName').value; });
 function markDirty(){
   dirty = true; $('#dirtyDot').style.display = 'block';
@@ -1363,24 +1363,24 @@ function updateFolderHint(){
   const h = $('#folderHint');
   const btn = $('#btnFolder');
   const priv = localStorage.getItem('visulab.privacy') === '1';
-  btn.textContent = priv ? '📁' : (dirName ? `📁 ${dirName}` : '📁 Dossier');
-  if(priv) btn.dataset.label = dirName ? `📁 ${dirName}` : '📁 Dossier';
-  btn.title = dirName ? `Dossier de travail : ${dirName} — cliquez pour en choisir un autre` : 'Choisir le dossier de travail des scénarios';
-  if(!FS_OK){ h.textContent = 'Navigateur sans accès dossier : les scénarios sont gardés dans le navigateur. Utilisez Exporter/Importer pour les fichiers.'; return; }
-  if(dirHandle && !window._needPerm) h.innerHTML = `📁 Dossier de travail : <b>${esc(dirName||'?')}/</b> — Enregistrer y écrit directement le fichier JSON.`;
-  else if(dirHandle && window._needPerm) h.innerHTML = `Dossier mémorisé : <b>${esc(dirName||'?')}/</b> — cliquez sur <b>↻</b> pour ré-autoriser l'accès (demandé par le navigateur après chaque rechargement).`;
-  else h.innerHTML = 'Cliquez sur <b>📁 Dossier</b> et choisissez votre dossier de travail (ex. VisuLab/scenarios) : les fichiers JSON y seront enregistrés directement.';
+  btn.textContent = priv ? '📁' : (dirName ? `📁 ${dirName}` : '📁 Folder');
+  if(priv) btn.dataset.label = dirName ? `📁 ${dirName}` : '📁 Folder';
+  btn.title = dirName ? `Working folder: ${dirName} — click to choose another` : 'Choose the scenarios working folder';
+  if(!FS_OK){ h.textContent = 'No folder access in this browser: scenarios are kept in the browser. Use Export/Import for files.'; return; }
+  if(dirHandle && !window._needPerm) h.innerHTML = `📁 Working folder: <b>${esc(dirName||'?')}/</b> — Save writes the JSON file there directly.`;
+  else if(dirHandle && window._needPerm) h.innerHTML = `Remembered folder: <b>${esc(dirName||'?')}/</b> — click <b>↻</b> to re-authorize access (the browser asks after each reload).`;
+  else h.innerHTML = 'Click <b>📁 Folder</b> and choose your working folder (e.g. VisuLab/scenarios): JSON files will be saved there directly.';
 }
 
-/* ================= Mode présentation ================= */
+/* ================= Presentation mode ================= */
 function setPresent(on){
   presenting = on;
   document.body.classList.toggle('presenting', on);
   cancelLinking(); select(null);
   if(on){
     document.documentElement.requestFullscreen?.().catch(()=>{});
-    setTimeout(zoomFit, 150); // après le passage en plein écran
-    toast('Mode présentation — Échap pour quitter, glisser pour naviguer, molette pour zoomer');
+    setTimeout(zoomFit, 150); // after entering full screen
+    toast('Presentation mode — Esc to exit, drag to pan, wheel to zoom');
   } else {
     if(document.fullscreenElement) document.exitFullscreen?.().catch(()=>{});
     zoomFit();
@@ -1389,10 +1389,10 @@ function setPresent(on){
 $('#btnPresent').addEventListener('click', () => setPresent(true));
 $('#exitPresent').addEventListener('click', () => setPresent(false));
 document.addEventListener('fullscreenchange', () => {
-  if(!document.fullscreenElement && presenting) setPresent(false); // Échap plein écran = sortie
+  if(!document.fullscreenElement && presenting) setPresent(false); // Esc in full screen = exit
 });
 
-/* ================= Mode confidentialité (partage d'écran) ================= */
+/* ================= Privacy mode (screen sharing) ================= */
 function setPrivacy(on){
   localStorage.setItem('visulab.privacy', on ? '1' : '0');
   $('#scenList').style.display = on ? 'none' : '';
