@@ -288,6 +288,8 @@ const ICONS = {
   database: c => `<ellipse cx="20" cy="9" rx="12" ry="4.5" fill="${c}"/><path d="M8 9v22c0 2.5 5.4 4.5 12 4.5s12-2 12-4.5V9" fill="${c}" opacity=".75"/><path d="M8 16.5c0 2.5 5.4 4.5 12 4.5s12-2 12-4.5M8 24c0 2.5 5.4 4.5 12 4.5s12-2 12-4.5" stroke="#fff" stroke-width="1.4" fill="none" opacity=".7"/>`,
   s3lock:   c => `<ellipse cx="20" cy="8" rx="13" ry="4" fill="${c}"/><path d="M7 8l3.5 25c.2 2.2 4.2 4 9.5 4s9.3-1.8 9.5-4L33 8" fill="${c}" opacity=".8"/><rect x="15" y="21" width="10" height="8.5" rx="1.5" fill="#fff"/><path d="M17 21v-3a3 3 0 016 0v3" stroke="#fff" stroke-width="2" fill="none"/><circle cx="20" cy="25" r="1.4" fill="${c}"/>`,
   s3local:  c => `<rect x="4" y="8" width="32" height="21" rx="3" fill="${c}"/><text x="13" y="23" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">S3</text><rect x="22" y="16" width="9" height="8" rx="1.5" fill="#fff"/><path d="M23.8 16v-2.5a2.7 2.7 0 015.4 0V16" stroke="#fff" stroke-width="1.8" fill="none"/><circle cx="26.5" cy="19.8" r="1.2" fill="${c}"/><rect x="8" y="31" width="24" height="3" rx="1.5" fill="${c}"/>`,
+  tapelib:  c => `<rect x="5" y="4" width="30" height="32" rx="3" fill="${c}"/><rect x="9" y="8" width="13" height="4.5" rx="1" fill="#fff" opacity=".85"/><rect x="9" y="14.5" width="13" height="4.5" rx="1" fill="#fff" opacity=".65"/><rect x="9" y="21" width="13" height="4.5" rx="1" fill="#fff" opacity=".45"/><rect x="9" y="27.5" width="13" height="4.5" rx="1" fill="#fff" opacity=".3"/><rect x="26" y="8" width="5" height="24" rx="2" fill="#fff" opacity=".25"/><circle cx="28.5" cy="12" r="2" fill="#fff"/><path d="M28.5 14v12" stroke="#fff" stroke-width="1.6"/><path d="M26.5 26h4" stroke="#fff" stroke-width="1.6"/>`,
+  lto:      c => `<rect x="5" y="9" width="30" height="24" rx="2.5" fill="${c}"/><path d="M5 13l6-4h24v4z" fill="${c}" opacity=".7"/><circle cx="17" cy="23" r="6" fill="#fff" opacity=".9"/><circle cx="17" cy="23" r="2.2" fill="${c}"/><path d="M17 17.6l1.4 2.3M11.6 24.7l2.6-.6M20 27.5l-1.2-2.4" stroke="${c}" stroke-width="1.3"/><rect x="26" y="17" width="7" height="12" rx="1" fill="#fff" opacity=".55"/><path d="M27.5 19h4M27.5 21.5h4M27.5 24h4M27.5 26.5h4" stroke="${c}" stroke-width="1"/>`,
   zone:     c => `<rect x="4" y="6" width="32" height="28" rx="4" fill="${c}18" stroke="${c}" stroke-width="2" stroke-dasharray="5 3"/><text x="9" y="16" font-size="8" font-weight="bold" fill="${c}">ZONE</text>`,
   pod:      c => `<rect x="4" y="6" width="32" height="28" rx="6" fill="${c}18" stroke="${c}" stroke-width="2"/><circle cx="13" cy="24" r="3" fill="${c}"/><circle cx="20" cy="24" r="3" fill="${c}"/><circle cx="27" cy="24" r="3" fill="${c}"/><text x="9" y="15" font-size="8" font-weight="bold" fill="${c}">POD</text>`,
   dc:       c => `<path d="M6 34V14l14-8 14 8v20" fill="${c}18" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="12" y="20" width="6" height="6" fill="${c}"/><rect x="22" y="20" width="6" height="6" fill="${c}"/><rect x="16" y="28" width="8" height="6" fill="${c}"/>`,
@@ -308,6 +310,7 @@ const STENCILS = [
     {type:'container', label:'Container'}, {type:'database', label:'Database'},
     {type:'poste', label:'Workstation'}, {type:'nas', label:'NAS'}, {type:'stockage', label:'Storage'},
     {type:'s3lock', label:'S3 Object Lock'}, {type:'s3local', label:'Local S3 (immutable)'},
+    {type:'tapelib', label:'Tape Library'}, {type:'lto', label:'LTO Tape'},
     {type:'firewall', label:'Firewall'}, {type:'cloud', label:'Cloud'},
   ]},
   {cat:'Zones', items:[
@@ -1139,12 +1142,12 @@ $('#btnPng').addEventListener('click', () => {
 });
 
 /* ================= Provisioning (automated script + manual runbook) ================= */
-const MACHINE_TYPES = ['vbr','proxy','repo','wan','em','vone','agent','server','poste','nas','bdd','stockage','vm','kubernetes','container','database','s3local'];
+const MACHINE_TYPES = ['vbr','proxy','repo','wan','em','vone','agent','server','poste','nas','bdd','stockage','vm','kubernetes','container','database','s3local','tapelib'];
 const HYPER_TYPES = ['esxi','hyperv','pve','ahv','kvm','hyperviseur'];
 // Profiles per role: [vCPU, RAM MB, disk GB]
 const PROFILES = {vbr:[4,8192,100], em:[2,4096,60], vone:[4,8192,80], proxy:[2,4096,50], repo:[2,4096,200],
                   wan:[2,4096,60], agent:[1,2048,40], server:[2,4096,60], poste:[2,4096,60],
-                  nas:[2,4096,200], bdd:[2,8192,100], stockage:[2,4096,200], s3local:[4,8192,500],
+                  nas:[2,4096,200], bdd:[2,8192,100], stockage:[2,4096,200], s3local:[4,8192,500], tapelib:[2,4096,100],
                   vm:[2,4096,60], kubernetes:[4,8192,80], container:[1,2048,20], database:[2,8192,100]};
 const machines = () => scenario.nodes.filter(n => MACHINE_TYPES.includes(n.type));
 const hypervisors = () => scenario.nodes.filter(n => HYPER_TYPES.includes(n.type));
